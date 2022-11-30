@@ -1,5 +1,6 @@
 {
   "todoList": {
+    "title": "What needs to get done today?",
     "addTodoPrompt": "Add a new item"
   }
 }

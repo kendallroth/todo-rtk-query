@@ -8,7 +8,7 @@ const theme = createTheme({
     },
     secondary: {
       main: deepOrange[400],
-    }
+    },
   },
 });
 

@@ -21,10 +21,10 @@ module.exports = () => {
   database.users = [dummyUser, createUser("unused", "password")];
 
   database.todos = [
-    createTodo(dummyUser.userId, "Brew cup of coffee", true),
-    createTodo(dummyUser.userId, "Research `redux-toolkit-query`"),
-    createTodo(dummyUser.userId, "Check HackerNews", true),
-    createTodo(dummyUser.userId, "Throw out cup of coffee"),
+    createTodo(dummyUser.id, "Brew cup of coffee", true),
+    createTodo(dummyUser.id, "Research `redux-toolkit-query`"),
+    createTodo(dummyUser.id, "Check HackerNews", true),
+    createTodo(dummyUser.id, "Throw out cup of coffee"),
   ];
 
   return database;

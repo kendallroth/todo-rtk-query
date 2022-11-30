@@ -8,10 +8,11 @@ interface TodoListProps {
   disabled?: boolean;
   todos: Todo[];
   onToggle: (todo: Todo) => void;
+  onDelete: (todo: Todo) => void;
 }
 
 const TodoList = (props: TodoListProps) => {
-  const { disabled = false, todos, onToggle } = props;
+  const { disabled = false, todos, onDelete, onToggle } = props;
 
   return (
     <Paper>
@@ -19,7 +20,12 @@ const TodoList = (props: TodoListProps) => {
         {todos.map((todo, idx) => (
           <Fragment key={todo.id}>
             {idx > 0 && <Divider />}
-            <TodoItem disabled={disabled} todo={todo} onToggle={() => onToggle(todo)} />
+            <TodoItem
+              disabled={disabled}
+              todo={todo}
+              onDelete={() => onDelete(todo)}
+              onToggle={() => onToggle(todo)}
+            />
           </Fragment>
         ))}
         {!todos.length && (

@@ -30,7 +30,7 @@ const TodoItem = (props: TodoItemProps) => {
       >
         {todo.text}
       </Typography>
-      <IconButton disabled={disabled || true} sx={{ ml: "auto" }} onClick={onDelete}>
+      <IconButton color="error" disabled={disabled} size="small" sx={{ ml: "auto" }} onClick={onDelete}>
         <Delete />
       </IconButton>
     </Stack>

@@ -9,6 +9,25 @@ export const todoApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: config.api.url }),
   tagTypes: ["todos"],
   endpoints: (builder) => ({
+    deleteTodo: builder.mutation<Todo, Pick<Todo, "id">>({
+      query: ({ id }) => ({
+        url: `/todos/${id}`,
+        method: "DELETE",
+      }),
+      // NOTE: Prefer manual cache update instead of re-fetching all todo data...
+      // invalidatesTags: (todo) => [{ type: "todos", id: todo?.id }],
+      async onQueryStarted({ id }, { dispatch, queryFulfilled }) {
+        await queryFulfilled;
+        dispatch(
+          todoApi.util.updateQueryData("getTodos", undefined, (draftTodos) => {
+            const idx = draftTodos.findIndex((t) => t.id === id);
+            if (idx >= 0) {
+              draftTodos.splice(idx, 1);
+            }
+          }),
+        );
+      },
+    }),
     getTodos: builder.query<Todo[], unknown>({
       query: () => `/todos`,
       providesTags: (result) => [
@@ -22,8 +41,8 @@ export const todoApi = createApi({
         method: "PATCH",
         body: patch,
       }),
-      // invalidatesTags: (todo) => [{ type: "todos", id: todo?.id }],
       // NOTE: Prefer manual cache update instead of re-fetching all todo data...
+      // invalidatesTags: (todo) => [{ type: "todos", id: todo?.id }],
       async onQueryStarted({ id, ...patch }, { dispatch, queryFulfilled }) {
         const { data: todo } = await queryFulfilled;
         dispatch(
