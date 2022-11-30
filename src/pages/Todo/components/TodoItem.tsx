@@ -1,5 +1,5 @@
 import { CheckCircle, CircleOutlined, Delete } from "@mui/icons-material";
-import { IconButton, Stack, Typography } from "@mui/material";
+import { Checkbox, IconButton, Stack, Typography } from "@mui/material";
 import { Todo } from "../../../types";
 
 interface TodoItemProps {
@@ -14,13 +14,18 @@ const TodoItem = (props: TodoItemProps) => {
 
   return (
     <Stack alignItems="center" direction="row" sx={{ p: 0.5 }}>
-      <IconButton color="secondary" disabled={disabled} sx={{ mr: 1 }} onClick={onToggle}>
-        {todo.completed ? <CheckCircle /> : <CircleOutlined />}
-      </IconButton>
+      <Checkbox
+        checked={todo.complete}
+        checkedIcon={<CheckCircle />}
+        color="secondary"
+        disabled={disabled}
+        icon={<CircleOutlined />}
+        onChange={onToggle}
+      />
       <Typography
         sx={{
-          color: todo.completed ? "grey" : undefined,
-          textDecoration: todo.completed ? "line-through" : undefined,
+          color: todo.complete ? "grey" : undefined,
+          textDecoration: todo.complete ? "line-through" : undefined,
         }}
       >
         {todo.text}

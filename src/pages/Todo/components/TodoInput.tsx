@@ -41,7 +41,6 @@ const TodoInput = (props: TodoInputProps) => {
   return (
     <Paper
       sx={{
-        mb: 2,
         p: 0.5,
         outline: inputFocused ? `2px solid ${theme.palette.secondary.light}` : undefined,
       }}

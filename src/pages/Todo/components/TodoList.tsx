@@ -1,15 +1,17 @@
-import { Divider, Paper, Stack } from "@mui/material";
+import { Alert, Divider, Paper, Stack, Typography } from "@mui/material";
 import { Fragment } from "react";
 
 import { Todo } from "../../../types";
 import { TodoItem } from "../components";
 
 interface TodoListProps {
+  disabled?: boolean;
   todos: Todo[];
+  onToggle: (todo: Todo) => void;
 }
 
 const TodoList = (props: TodoListProps) => {
-  const {todos} = props;
+  const { disabled = false, todos, onToggle } = props;
 
   return (
     <Paper>
@@ -17,9 +19,14 @@ const TodoList = (props: TodoListProps) => {
         {todos.map((todo, idx) => (
           <Fragment key={todo.id}>
             {idx > 0 && <Divider />}
-            <TodoItem todo={todo} />
+            <TodoItem disabled={disabled} todo={todo} onToggle={() => onToggle(todo)} />
           </Fragment>
         ))}
+        {!todos.length && (
+          <Alert severity="warning">
+            <Typography>No todos found!</Typography>
+          </Alert>
+        )}
       </Stack>
     </Paper>
   );

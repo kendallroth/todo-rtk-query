@@ -1,16 +1,37 @@
-import { Stack, useTheme } from "@mui/material";
+import { Refresh } from "@mui/icons-material";
+import { IconButton, Stack, useTheme } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { Todo } from "../../../types";
-import { TodoInput, TodoList } from "../components";
+import { todoApi } from "../../../api";
+import { ProgressIndicator } from "../../../components/layout";
+import { Todo, TodoStatusFilter } from "../../../types";
+import { TodoFilter, TodoInput, TodoList } from "../components";
 
 const TodosPage = () => {
   const { t } = useTranslation();
   const theme = useTheme();
 
+  const [todosFilter, setTodosFilter] = useState<TodoStatusFilter>("outstanding");
+
+  const todosQuery = todoApi.useGetTodosQuery(undefined, {
+    selectFromResult: ({ data, ...rest }) => ({
+      ...rest,
+      data: data?.filter((todo) => {
+        return (
+          todosFilter === "all" ||
+          (todo.complete && todosFilter === "completed") ||
+          (!todo.complete && todosFilter === "outstanding")
+        );
+      }),
+    }),
+  });
+  const todos = todosQuery.data ?? [];
+
   const [inputText, setInputText] = useState("");
+
+  const [toggleTodoTrigger, toggleTodoMutation] = todoApi.useToggleTodoMutation();
 
   const onAddTodo = () => {
     const text = inputText.trim();
@@ -21,32 +42,38 @@ const TodosPage = () => {
     setInputText("");
   };
 
-  const todos: Todo[] = [
-    {
-      id: "1",
-      completed: false,
-      createdAt: "2022-01-02",
-      text: "Something to do",
-    },
-    {
-      id: "2",
-      completed: true,
-      createdAt: "2022-01-03",
-      text: "A completed task",
-    },
-  ];
+  const onToggleTodo = (todo: Todo) => {
+    toggleTodoTrigger({ complete: !todo.complete, id: todo.id });
+  };
 
   return (
     <Stack sx={{ p: 4 }}>
       <Grid2 container justifyContent="center" spacing={2}>
         <Grid2 xs={12} sm={10} md={8} lg={6}>
-          <TodoInput
-            disabled={false}
-            value={inputText}
-            onChange={setInputText}
-            onSubmit={onAddTodo}
-          />
-          <TodoList todos={todos} />
+          <Stack spacing={2}>
+            <TodoInput
+              disabled={todosQuery.isLoading}
+              value={inputText}
+              onChange={setInputText}
+              onSubmit={onAddTodo}
+            />
+            <Stack alignItems="center" direction="row">
+              <TodoFilter value={todosFilter} onSelect={setTodosFilter} />
+              <IconButton
+                disabled={todosQuery.isFetching}
+                size="small"
+                sx={{ ml: "auto" }}
+                onClick={todosQuery.refetch}
+              >
+                <Refresh />
+              </IconButton>
+            </Stack>
+            {!todosQuery.isLoading ? (
+              <TodoList disabled={toggleTodoMutation.isLoading} todos={todos} onToggle={onToggleTodo} />
+            ) : (
+              <ProgressIndicator text="Fetching todos" />
+            )}
+          </Stack>
         </Grid2>
       </Grid2>
     </Stack>
