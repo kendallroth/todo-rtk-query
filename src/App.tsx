@@ -4,7 +4,7 @@ import { Box, CssBaseline } from "@mui/material";
 
 import { TheAppHeader } from "./components/single";
 import "./localization/localize";
-import { TodoList } from "./pages/Todo";
+import { TodosPage } from "./pages/Todo";
 import theme from "./theme";
 
 const App = () => {
@@ -14,7 +14,7 @@ const App = () => {
       <CssBaseline />
       <TheAppHeader />
       <Box className="app-content" sx={{ bgcolor: "primary.main" }}>
-        <TodoList />
+        <TodosPage />
       </Box>
     </ThemeProvider>
   );

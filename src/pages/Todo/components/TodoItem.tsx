@@ -3,15 +3,18 @@ import { IconButton, Stack, Typography } from "@mui/material";
 import { Todo } from "../../../types";
 
 interface TodoItemProps {
+  disabled?: boolean;
   todo: Todo;
+  onDelete?: () => void;
+  onToggle?: () => void;
 }
 
 const TodoItem = (props: TodoItemProps) => {
-  const { todo } = props;
+  const { disabled = false, todo, onDelete, onToggle } = props;
 
   return (
     <Stack alignItems="center" direction="row" sx={{ p: 0.5 }}>
-      <IconButton color="secondary" sx={{ mr: 1 }}>
+      <IconButton color="secondary" disabled={disabled} sx={{ mr: 1 }} onClick={onToggle}>
         {todo.completed ? <CheckCircle /> : <CircleOutlined />}
       </IconButton>
       <Typography
@@ -22,7 +25,7 @@ const TodoItem = (props: TodoItemProps) => {
       >
         {todo.text}
       </Typography>
-      <IconButton disabled sx={{ ml: "auto" }}>
+      <IconButton disabled={disabled || true} sx={{ ml: "auto" }} onClick={onDelete}>
         <Delete />
       </IconButton>
     </Stack>

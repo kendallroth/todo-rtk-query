@@ -1,1 +1,1 @@
-export { TodoList } from "./TodoList";
+export { TodosPage } from "./Todos";
