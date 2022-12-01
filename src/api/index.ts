@@ -1,4 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import dayjs from "dayjs";
+import { v4 as uuid } from "uuid";
 
 import config from "../config";
 
@@ -9,6 +11,29 @@ export const todoApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: config.api.url }),
   tagTypes: ["todos"],
   endpoints: (builder) => ({
+    addTodo: builder.mutation<Todo, Pick<Todo, "text">>({
+      query: (todo) => ({
+        url: `/todos`,
+        method: "POST",
+        body: {
+          ...todo,
+          id: uuid(),
+          complete: false,
+          createdAt: dayjs().toISOString(),
+        } as Todo,
+      }),
+      // NOTE: Prefer manual cache update instead of re-fetching all todo data...
+      // invalidatesTags: () => [{ type: "todos", id: "LIST" }],
+      async onQueryStarted(payload, { dispatch, queryFulfilled }) {
+        const { data: todo } = await queryFulfilled;
+        console.log(todo);
+        dispatch(
+          todoApi.util.updateQueryData("getTodos", undefined, (draftTodos) => {
+            draftTodos.push(todo);
+          }),
+        );
+      },
+    }),
     deleteTodo: builder.mutation<Todo, Pick<Todo, "id">>({
       query: ({ id }) => ({
         url: `/todos/${id}`,

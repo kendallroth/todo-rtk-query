@@ -1,5 +1,5 @@
 import { Refresh } from "@mui/icons-material";
-import { IconButton, Stack, Typography, useTheme } from "@mui/material";
+import { IconButton, Stack, Typography } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -11,7 +11,6 @@ import { TodoFilter, TodoInput, TodoList } from "../components";
 
 const TodosPage = () => {
   const { t } = useTranslation();
-  const theme = useTheme();
 
   const [todosFilter, setTodosFilter] = useState<TodoStatusFilter>("outstanding");
 
@@ -31,14 +30,15 @@ const TodosPage = () => {
 
   const [inputText, setInputText] = useState("");
 
+  const [addTodoTrigger, addTodoMutation] = todoApi.useAddTodoMutation();
   const [toggleTodoTrigger, toggleTodoMutation] = todoApi.useToggleTodoMutation();
   const [deleteTodoTrigger, deleteTodoMutation] = todoApi.useDeleteTodoMutation();
 
-  const onAddTodo = () => {
+  const onAddTodo = async () => {
     const text = inputText.trim();
     if (!text) return;
 
-    // TODO
+    await addTodoTrigger({ text });
 
     setInputText("");
   };
@@ -60,7 +60,7 @@ const TodosPage = () => {
               {t("screens:todoList.title")}
             </Typography>
             <TodoInput
-              disabled={todosQuery.isLoading}
+              disabled={todosQuery.isLoading || addTodoMutation.isLoading}
               value={inputText}
               onChange={setInputText}
               onSubmit={onAddTodo}
