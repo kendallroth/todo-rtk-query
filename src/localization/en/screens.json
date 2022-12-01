@@ -1,6 +1,10 @@
 {
   "todoList": {
     "title": "What needs to get done today?",
-    "addTodoPrompt": "Add a new item"
+    "addTodoPrompt": "Add a new item",
+    "notifications": {
+      "todoAdded": "Todo was added",
+      "todoDeleted": "Todo was deleted"
+    }
   }
 }

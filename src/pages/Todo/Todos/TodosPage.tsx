@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 
 import { todoApi } from "../../../api";
 import { ProgressIndicator } from "../../../components/layout";
+import { useSnackbar } from "../../../hooks";
 import { Todo, TodoStatusFilter } from "../../../types";
 import { TodoFilter, TodoInput, TodoList } from "../components";
 
@@ -28,11 +29,10 @@ const TodosPage = () => {
   });
   const todos = todosQuery.data ?? [];
 
-  const [inputText, setInputText] = useState("");
+  const { notifySuccess } = useSnackbar();
 
+  const [inputText, setInputText] = useState("");
   const [addTodoTrigger, addTodoMutation] = todoApi.useAddTodoMutation();
-  const [toggleTodoTrigger, toggleTodoMutation] = todoApi.useToggleTodoMutation();
-  const [deleteTodoTrigger, deleteTodoMutation] = todoApi.useDeleteTodoMutation();
 
   const onAddTodo = async () => {
     const text = inputText.trim();
@@ -40,12 +40,19 @@ const TodosPage = () => {
 
     await addTodoTrigger({ text });
 
+    notifySuccess(t("screens:todoList.notifications.todoAdded"));
     setInputText("");
   };
 
-  const onDeleteTodo = (todo: Todo) => {
-    deleteTodoTrigger({ id: todo.id });
+  const [deleteTodoTrigger, deleteTodoMutation] = todoApi.useDeleteTodoMutation();
+
+  const onDeleteTodo = async (todo: Todo) => {
+    await deleteTodoTrigger({ id: todo.id });
+
+    notifySuccess(t("screens:todoList.notifications.todoDeleted"));
   };
+
+  const [toggleTodoTrigger, toggleTodoMutation] = todoApi.useToggleTodoMutation();
 
   const onToggleTodo = (todo: Todo) => {
     toggleTodoTrigger({ complete: !todo.complete, id: todo.id });

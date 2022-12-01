@@ -8,17 +8,20 @@ import "./localization/localize";
 import { TodosPage } from "./pages/Todo";
 import theme from "./theme";
 import { store } from "./store";
+import { ContextProvider } from "./contexts";
 
 const App = () => {
   return (
     <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <TheAppHeader />
-        <Box className="app-content" sx={{ bgcolor: "primary.main" }}>
-          <TodosPage />
-        </Box>
-      </ThemeProvider>
+      <ContextProvider>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <TheAppHeader />
+          <Box className="app-content" sx={{ bgcolor: "primary.main" }}>
+            <TodosPage />
+          </Box>
+        </ThemeProvider>
+      </ContextProvider>
     </Provider>
   );
 };
