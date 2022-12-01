@@ -1,4 +1,5 @@
 import { Chip, Stack } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 import { TodoStatusFilter } from "../../../types";
 
@@ -7,14 +8,16 @@ interface TodoFilterProps {
   onSelect: (status: TodoStatusFilter) => void;
 }
 
-const statuses: { label: string; value: TodoStatusFilter }[] = [
-  { label: "All", value: "all" },
-  { label: "Remaining", value: "outstanding" },
-  { label: "Completed", value: "completed" },
-];
-
 const TodoFilter = (props: TodoFilterProps) => {
   const { value, onSelect } = props;
+
+  const { t } = useTranslation();
+
+  const statuses: { label: string; value: TodoStatusFilter }[] = [
+    { label: t("common:todoStatus.all"), value: "all" },
+    { label: t("common:todoStatus.outstanding"), value: "outstanding" },
+    { label: t("common:todoStatus.completed"), value: "completed" },
+  ];
 
   return (
     <Stack direction="row" spacing={2}>

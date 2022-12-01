@@ -87,6 +87,7 @@ const TodosPage = () => {
               <TodoList
                 // TODO: Figure out how to limit to disabling only the specific todo item being modified
                 disabled={toggleTodoMutation.isLoading || deleteTodoMutation.isLoading}
+                loading={todosQuery.isFetching}
                 todos={todos}
                 onDelete={onDeleteTodo}
                 onToggle={onToggleTodo}

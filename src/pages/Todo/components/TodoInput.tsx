@@ -1,6 +1,6 @@
 import { Add } from "@mui/icons-material";
 import { IconButton, InputBase, Paper, Stack, useTheme } from "@mui/material";
-import { KeyboardEvent, useState } from "react";
+import { KeyboardEvent, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 interface TodoInputProps {
@@ -11,10 +11,18 @@ interface TodoInputProps {
 }
 
 const TodoInput = (props: TodoInputProps) => {
-  const {disabled = false, value, onChange, onSubmit} = props;
+  const { disabled = false, value, onChange, onSubmit } = props;
 
   const { t } = useTranslation();
   const theme = useTheme();
+
+  const inputRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    // NOTE: Something apparently steals focus after mount (requires timeout)
+    setTimeout(() => {
+      inputRef.current?.focus();
+    }, 100);
+  }, []);
 
   const [inputFocused, setInputFocused] = useState(false);
 
@@ -47,6 +55,7 @@ const TodoInput = (props: TodoInputProps) => {
     >
       <Stack direction="row">
         <InputBase
+          inputRef={inputRef}
           disabled={disabled}
           placeholder={t("screens:todoList.addTodoPrompt")}
           sx={{ flexGrow: 1, px: 1 }}

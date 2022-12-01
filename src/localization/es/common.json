@@ -1,0 +1,11 @@
+{
+  "app": {
+    "title": "ToDo"
+  },
+  "todoStatus": {
+    "all": "Todos",
+    "completed": "Terminado",
+    "outstanding": "Restante"
+  }
+}
+

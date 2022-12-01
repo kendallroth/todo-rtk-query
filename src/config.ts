@@ -4,9 +4,14 @@ interface Config {
   };
 }
 
+const apiUrl = process.env.REACT_APP_API_URL;
+if (!apiUrl) {
+  throw new Error("API URL is required");
+}
+
 const config: Config = {
   api: {
-    url: process.env.REACT_APP_API_URL ?? "",
+    url: apiUrl,
   },
 };
 

@@ -6,17 +6,18 @@ import { TodoItem } from "../components";
 
 interface TodoListProps {
   disabled?: boolean;
+  loading?: boolean;
   todos: Todo[];
   onToggle: (todo: Todo) => void;
   onDelete: (todo: Todo) => void;
 }
 
 const TodoList = (props: TodoListProps) => {
-  const { disabled = false, todos, onDelete, onToggle } = props;
+  const { disabled = false, loading = false, todos, onDelete, onToggle } = props;
 
   return (
     <Paper>
-      <Stack>
+      <Stack sx={{ opacity: loading ? 0.6 : 1 }}>
         {todos.map((todo, idx) => (
           <Fragment key={todo.id}>
             {idx > 0 && <Divider />}

@@ -1,0 +1,11 @@
+{
+  "todoList": {
+    "title": "¿Qué hay que hacer hoy?",
+    "addTodoPrompt": "Agregar un nuevo elemento",
+    "notifications": {
+      "todoAdded": "Todo fue añadido",
+      "todoDeleted": "Todo was eliminado"
+    }
+  }
+}
+
