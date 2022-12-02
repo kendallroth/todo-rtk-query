@@ -1,8 +1,13 @@
 # Todo
 
-> Sample React project to (re)learn Redux Toolkit Query, i18n, and Material UI.
+> Sample React Todo list to (re)learn Redux Toolkit Query, i18n, and Material UI.
 
 ![Example](./assets/example.png)
+
+## Features
+
+- Manage daily Todo list
+- Support multiple languages
 
 ## Development
 
