@@ -26,7 +26,6 @@ export const todoApi = createApi({
       // invalidatesTags: () => [{ type: "todos", id: "LIST" }],
       async onQueryStarted(payload, { dispatch, queryFulfilled }) {
         const { data: todo } = await queryFulfilled;
-        console.log(todo);
         dispatch(
           todoApi.util.updateQueryData("getTodos", undefined, (draftTodos) => {
             draftTodos.push(todo);
